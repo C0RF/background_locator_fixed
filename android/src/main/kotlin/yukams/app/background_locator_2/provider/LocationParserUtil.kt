@@ -5,8 +5,8 @@ import com.google.android.gms.location.LocationResult
 
 object LocationParserUtil {
 
-    fun getLocationMapFromLocation(location: Location): HashMap<Any, Any> {
-        val map = HashMap<Any, Any>()
+    fun getLocationMapFromLocation(location: Location): HashMap<Any, Any?> {
+        val map = HashMap<Any, Any?>()
         map["latitude"] = location.latitude
         map["longitude"] = location.longitude
         map["accuracy"] = location.accuracy
@@ -28,9 +28,9 @@ object LocationParserUtil {
         return map
     }
 
-    fun getLocationMapFromLocation(locationResult: LocationResult?): HashMap<Any, Any>? {
+    fun getLocationMapFromLocation(locationResult: LocationResult?): HashMap<Any, Any?>? {
         val location = locationResult?.lastLocation ?: return null
-        val map = HashMap<Any, Any>()
+        val map = HashMap<Any, Any?>()
         map["latitude"] = location.latitude
         map["longitude"] = location.longitude
         map["accuracy"] = location.accuracy
@@ -38,6 +38,7 @@ object LocationParserUtil {
         map["bearing"] = location.bearing
         map["speed"] = location.speed
         map["time"] = location.time
+        map["provider"] = location.provider
         map["isMocked"] = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
             location.isFromMockProvider
         } else {
