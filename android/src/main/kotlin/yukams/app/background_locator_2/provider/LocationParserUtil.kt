@@ -4,12 +4,11 @@ import android.location.Location
 import android.os.Build
 import com.google.android.gms.location.LocationResult
 import yukams.app.background_locator_2.Keys
-import java.util.HashMap
 
 class LocationParserUtil {
     companion object {
 
-        fun getLocationMapFromLocation(location: Location): HashMap<String, Any?> {
+        fun getLocationMapFromLocation(location: Location): HashMap<Any, Any?> {
             var speedAccuracy = 0f
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 speedAccuracy = location.speedAccuracyMetersPerSecond
@@ -19,7 +18,7 @@ class LocationParserUtil {
                 isMocked = location.isFromMockProvider
             }
 
-            return hashMapOf(
+            val map = hashMapOf<String, Any?>(
                 Keys.ARG_IS_MOCKED to isMocked,
                 Keys.ARG_LATITUDE to location.latitude,
                 Keys.ARG_LONGITUDE to location.longitude,
@@ -31,9 +30,12 @@ class LocationParserUtil {
                 Keys.ARG_TIME to location.time.toDouble(),
                 Keys.ARG_PROVIDER to location.provider,
             )
+
+            // نعمل cast هنا عشان الكومبايلر يرضى
+            return map as HashMap<Any, Any?>
         }
 
-        fun getLocationMapFromLocation(location: LocationResult?): HashMap<String, Any?>? {
+        fun getLocationMapFromLocation(location: LocationResult?): HashMap<Any, Any?>? {
             val firstLocation = location?.lastLocation ?: return null
 
             var speedAccuracy = 0f
@@ -45,7 +47,7 @@ class LocationParserUtil {
                 isMocked = firstLocation.isFromMockProvider
             }
 
-            return hashMapOf(
+            val map = hashMapOf<String, Any?>(
                 Keys.ARG_IS_MOCKED to isMocked,
                 Keys.ARG_LATITUDE to firstLocation.latitude,
                 Keys.ARG_LONGITUDE to firstLocation.longitude,
@@ -56,6 +58,8 @@ class LocationParserUtil {
                 Keys.ARG_HEADING to firstLocation.bearing,
                 Keys.ARG_TIME to firstLocation.time.toDouble()
             )
+
+            return map as HashMap<Any, Any?>
         }
     }
 }
